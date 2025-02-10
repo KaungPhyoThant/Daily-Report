@@ -18,10 +18,6 @@ class DailyReport extends Model
         'attachment'
     ];
 
-    protected $casts = [
-        'attachment' => 'array'
-    ];
-
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);

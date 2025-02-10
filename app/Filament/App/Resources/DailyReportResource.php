@@ -9,13 +9,14 @@ use Filament\Tables\Table;
 use App\Models\DailyReport;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\DailyReportResource\Pages;
 use App\Filament\App\Resources\DailyReportResource\RelationManagers;
-use Filament\Forms\Components\FileUpload;
 
 class DailyReportResource extends Resource
 {
@@ -120,7 +121,7 @@ class DailyReportResource extends Resource
             'index' => Pages\ListDailyReports::route('/'),
             'create' => Pages\CreateDailyReport::route('/create'),
             'edit' => Pages\EditDailyReport::route('/{record}/edit'),
-            'view' => Pages\DailyReportView::route('/{record}/view'),
+            'view' => Pages\ViewDailyReport::route('/{record}/view'),
         ];
     }
 }

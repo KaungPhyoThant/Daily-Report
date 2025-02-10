@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\EmployeeMiddleware;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -30,12 +31,6 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->databaseNotifications()
-            ->userMenuItems([
-                MenuItem::make('Admin')
-                ->label('Admin')
-                ->icon('heroicon-s-bolt')
-                ->url('/admin')
-            ->visible(fn(): bool => Auth::check() && Auth::user()->role === 'admin')])
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -62,6 +57,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EmployeeMiddleware::class,
             ]);
     }
 }

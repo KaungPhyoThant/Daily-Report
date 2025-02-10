@@ -15,18 +15,12 @@ class DailyReportObserver
      */
     public function created(DailyReport $dailyReport): void
     {
-        $recepient = User::where('role','admin')->get();
+        $recepient = User::where('role', 'admin')->get();
         $sender = Auth::user()->name;
         Notification::make()
             ->title($sender)
             ->body('Daily Report')
-            ->actions([
-            Action::make('View Report')
-                ->button()
-                ->markAsRead()
-                ->url(route('filament.app.resources.daily-reports.index', $dailyReport->id), shouldOpenInNewTab: false)
-            ])
-        ->sendToDatabase($recepient, isEventDispatched: true);
+            ->sendToDatabase($recepient, isEventDispatched: true);
     }
 
     /**

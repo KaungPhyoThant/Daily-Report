@@ -6,7 +6,7 @@ use App\Filament\App\Resources\DailyReportResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
-class DailyReportView extends ViewRecord
+class ViewDailyReport extends ViewRecord
 {
     protected static string $resource = DailyReportResource::class;
 }

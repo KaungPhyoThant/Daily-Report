@@ -32,13 +32,6 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile()
             ->databaseNotifications()
-            ->userMenuItems([
-                MenuItem::make('app')
-                ->label('App')
-                ->icon('heroicon-s-bolt')
-                ->url('/app')
-            ->visible(fn(): bool => Auth::check() && Auth::user()->role === 'admin')
-            ])
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Gray,
