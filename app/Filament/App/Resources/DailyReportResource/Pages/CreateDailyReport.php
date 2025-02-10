@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateDailyReport extends CreateRecord
 {
     protected static string $resource = DailyReportResource::class;
+
+    protected function afterCreate() : void
+    {
+        $this->dispatch('refreshtable');
+    }
 }

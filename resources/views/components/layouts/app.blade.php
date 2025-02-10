@@ -28,3 +28,33 @@
         @vite('resources/js/app.js')
     </body>
 </html>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let userId = {{ auth()->id() }};
+        let notificationCount = 0;
+        let originalTitle = document.title;
+
+        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+            cluster: "{{ env('PUSHER_APP_CLUSTER') }}",
+            encrypted: true
+        });
+
+        var channel = pusher.subscribe("private-notifications." + userId);
+        channel.bind("NewNotification", function (data) {
+            console.log("New notification received:", data); // Debugging
+            notificationCount = data.count;
+            updateTabTitle();
+        });
+
+        function updateTabTitle() {
+            if (notificationCount > 0) {
+                document.title = `(${notificationCount}) New Notifications - ${originalTitle}`;
+            } else {
+                document.title = originalTitle;
+            }
+        }
+    });
+</script>

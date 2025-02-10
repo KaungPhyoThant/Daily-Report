@@ -37,12 +37,6 @@ class DailyReportResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->user()->id),
-                FileUpload::make('attachment')
-                    ->directory('attachments')
-                    ->storeFiles()
-                    ->preserveFilenames()
-                    ->previewable(true)
-                    ->columnSpanFull(),
                 RichEditor::make('content')
                     ->columnSpanFull()
                     ->toolbarButtons([
@@ -77,12 +71,6 @@ class DailyReportResource extends Resource
                     ->html()
                     ->formatStateUsing(fn($state) => str_replace('src="http://localhost/storage/', 'src="/storage/', $state)),
                 //     ->hidden(),
-                TextColumn::make('attachment')
-                    ->html()
-                    ->formatStateUsing(fn($state) => collect($state)
-                        ->map(fn($file) => "<img src='/storage/attachments/$file' width='50' onerror='this.src=\"/storage/default-placeholder.png\"'>")
-                        ->implode(' '))
-                    ->columnSpanFull(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

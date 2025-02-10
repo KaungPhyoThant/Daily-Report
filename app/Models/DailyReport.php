@@ -15,7 +15,6 @@ class DailyReport extends Model
         'content' ,
         'date' ,
         'task' ,
-        'attachment'
     ];
 
     public function user() : BelongsTo

@@ -4,9 +4,10 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\DailyReport;
-use Filament\Notifications\Actions\Action;
+use App\Events\NewNotification;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
 
 class DailyReportObserver
 {
@@ -21,6 +22,11 @@ class DailyReportObserver
             ->title($sender)
             ->body('Daily Report')
             ->sendToDatabase($recepient, isEventDispatched: true);
+
+        foreach ($recepient as $user) {
+            $count = $user->unreadNotifications()->count();
+            broadcast(new NewNotification($user->id, $count));
+        }
     }
 
     /**
