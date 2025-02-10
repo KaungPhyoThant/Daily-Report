@@ -20,6 +20,12 @@ use App\Filament\App\Resources\DailyReportResource\RelationManagers;
 
 class DailyReportResource extends Resource
 {
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id());
+    }
+
     protected static ?string $model = DailyReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-cloud-arrow-up';
@@ -59,6 +65,7 @@ class DailyReportResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            // ->query(fn(Builder $query) => $query->when(auth()->check(), fn($q) => $q->where('user_id', auth()->id())))
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable(),

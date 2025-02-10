@@ -37,7 +37,7 @@ class UserResource extends Resource
                 Forms\Components\Select::make('role')
                     ->options([
                         'admin' => 'Admin',
-                        'stuff' => 'Employee'
+                        'staff' => 'Employee'
                     ]),
                 Forms\Components\Select::make('department_id')
                     ->relationship('department' , 'name'),

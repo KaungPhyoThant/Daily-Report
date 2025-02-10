@@ -16,7 +16,7 @@ class EmployeeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user() && Auth::user()->role === 'stuff')
+        if(auth()->user() && auth()->user()->role === 'stuff')
         {
             return $next($request);
         }
