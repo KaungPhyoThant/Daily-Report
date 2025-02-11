@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,65 +28,64 @@ class TaskResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Hidden::make('assigned_by')
-                ->default(fn() => auth()->user()->id),
-            Forms\Components\Select::make('assigned_to')
-            ->relationship('assignedTo' , 'name' , function ($query) {
-                return $query->where('role' , 'staff');
-            })
-                ->preload()
-                ->required(),
-            // Forms\Components\Repeater::make('assignedTo')
-            //     ->relationship('assignedTo')
-            //     ->schema([
-            //         Forms\Components\Select::make('user_id')
-            //             ->label('Assigned Employee')
-            //             ->relationship('assignedTo', 'name')
-            //             ->searchable()
-            //             ->required(),
-            //     ])
-            //     ->minItems(1)
-            //     ->addActionLabel('Add Employee'),
+                    ->default(fn() => auth()->user()->id),
+                Forms\Components\Select::make('assigned_to')
+                    ->relationship('assignedTo', 'name', function ($query) {
+                        return $query->where('role', 'staff');
+                    })
+                    ->preload()
+                    ->required(),
+                // Forms\Components\Repeater::make('assignedTo')
+                //     ->relationship('assignedTo')
+                //     ->schema([
+                //         Forms\Components\Select::make('user_id')
+                //             ->label('Assigned Employee')
+                //             ->relationship('assignedTo', 'name')
+                //             ->searchable()
+                //             ->required(),
+                //     ])
+                //     ->minItems(1)
+                //     ->addActionLabel('Add Employee'),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
                 Forms\Components\DatePicker::make('due_date')
                     ->required()
                     ->native(false),
+            Forms\Components\Textarea::make('description')
+                ->required()
+                ->columnSpanFull(),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'pending' => 'pending' ,
-                        'in_progress' => 'in_progress' ,
-                        'complete' => 'complete'
+                        'pending' => 'pending',
+                        'in_progress' => 'in_progress',
+                        'completed' => 'completed'
                     ])
                     ->default('pending')
-                    ->required(),
-            ]);
+                    ->required()
+                    ->hidden(),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('assigned_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('assigned_to')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('assignedTo.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('due_date')
                     ->date()
                     ->sortable(),
-            SelectColumn::make('status')
-                ->options([
-                    'pending' => 'Pending',
-                    'in_progress' => 'In Progress',
-                    'complete' => 'Complete',
-                ]),
+
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'pending' => 'gray',
+                        'in_progress' => 'warning',
+                        'completed' => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

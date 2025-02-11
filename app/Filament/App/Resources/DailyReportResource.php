@@ -38,9 +38,9 @@ class DailyReportResource extends Resource
                     ->required()
                     ->native(false)
                     ->maxDate(now()),
-                Forms\Components\TextInput::make('task')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('task_id')
+                    ->relationship('task' , 'title')
+                    ->required(),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => auth()->user()->id),
                 RichEditor::make('content')
@@ -72,7 +72,7 @@ class DailyReportResource extends Resource
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('task')
+                Tables\Columns\TextColumn::make('task.title')
                     ->searchable(),
                 TextColumn::make('content')
                     ->html()

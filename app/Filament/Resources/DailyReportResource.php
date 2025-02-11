@@ -64,7 +64,7 @@ class DailyReportResource extends Resource
                 Tables\Columns\TextColumn::make('date')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('task')
+                Tables\Columns\TextColumn::make('task.title')
                     ->searchable(),
                 TextColumn::make('content')
                     ->html()
@@ -88,7 +88,7 @@ class DailyReportResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
 
             ])

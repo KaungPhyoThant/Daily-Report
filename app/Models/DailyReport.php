@@ -14,7 +14,7 @@ class DailyReport extends Model
         'user_id' ,
         'content' ,
         'date' ,
-        'task' ,
+        'task_id' ,
     ];
 
     public function user() : BelongsTo
@@ -23,6 +23,6 @@ class DailyReport extends Model
     }
     public function task() : BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Task::class);
     }
 }
