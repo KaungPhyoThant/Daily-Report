@@ -55,4 +55,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+
+    // Tasks assigned by this user (admin)
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_by');
+    }
+
+    // Tasks assigned to this user (employee)
+    public function receivedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
 }

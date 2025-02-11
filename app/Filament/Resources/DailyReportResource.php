@@ -15,12 +15,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DailyReportResource\Pages;
 use App\Filament\Resources\DailyReportResource\RelationManagers;
+use Filament\Tables\Filters\SelectFilter;
 
 class DailyReportResource extends Resource
 {
     protected static ?string $model = DailyReport::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-cloud-arrow-up';
+    protected static ?string $navigationIcon = 'heroicon-s-cloud-arrow-down';
 
     public static function form(Form $form): Form
     {
@@ -79,7 +80,11 @@ class DailyReportResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('user.name')
+                    ->relationship('user' , 'name')
+                    ->label('Employee')
+                    ->preload()
+                    ->searchable()
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

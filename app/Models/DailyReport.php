@@ -21,4 +21,8 @@ class DailyReport extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function task() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

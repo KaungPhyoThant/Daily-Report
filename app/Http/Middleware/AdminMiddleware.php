@@ -21,7 +21,7 @@ class AdminMiddleware
             return $next($request);
         }
         else{
-            return redirect()->route('app');
+            return redirect()->route('filament.app.auth.login');
         }
     }
 }
