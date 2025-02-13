@@ -10,13 +10,19 @@ use App\Models\DailyReport;
 use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\DailyReportResource\Pages;
 use App\Filament\App\Resources\DailyReportResource\RelationManagers;
+use Filament\Forms\Components\HasManyRepeater;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DailyReportResource extends Resource
 {
@@ -28,7 +34,7 @@ class DailyReportResource extends Resource
 
     protected static ?string $model = DailyReport::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-cloud-arrow-up';
+    protected static ?string $navigationIcon = 'heroicon-s-calendar';
 
     public static function form(Form $form): Form
     {
@@ -38,11 +44,11 @@ class DailyReportResource extends Resource
                     ->required()
                     ->native(false)
                     ->maxDate(now()),
-                Forms\Components\Select::make('task_id')
-                    ->relationship('task' , 'title')
-                    ->required(),
-                Forms\Components\Hidden::make('user_id')
-                    ->default(fn() => auth()->user()->id),
+            Forms\Components\Select::make('task_id')
+                ->relationship('task', 'title')
+                ->required(),
+            Forms\Components\Hidden::make('user_id')
+                ->default(fn() => Auth::user()->id),
                 RichEditor::make('content')
                     ->columnSpanFull()
                     ->toolbarButtons([

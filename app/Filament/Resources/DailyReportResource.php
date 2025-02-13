@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DailyReportResource\Pages;
 use App\Filament\Resources\DailyReportResource\RelationManagers;
 use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Support\Facades\Auth;
 
 class DailyReportResource extends Resource
 {
@@ -31,11 +32,11 @@ class DailyReportResource extends Resource
                     ->required()
                     ->native(false)
                     ->maxDate(now()),
-                Forms\Components\TextInput::make('task')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('task')
+                ->relationship('task' , 'title')
+                    ->required(),
                 Forms\Components\Hidden::make('user_id')
-                    ->default(fn() => auth()->user()->id),
+                    ->default(fn() => Auth::user()->id),
                 RichEditor::make('content')
                     ->columnSpanFull()
                     ->toolbarButtons([
@@ -60,6 +61,7 @@ class DailyReportResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
+                ->label('Employee Name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->date()

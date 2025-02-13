@@ -17,7 +17,8 @@ class Task extends Model
         'title' ,
         'description' ,
         'due_date' ,
-        'status'
+        'status' ,
+        'progress' ,
     ];
 
     public function assignedBy() : BelongsTo

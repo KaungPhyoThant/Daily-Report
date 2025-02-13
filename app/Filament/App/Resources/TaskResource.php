@@ -33,21 +33,23 @@ class TaskResource extends Resource
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('assigned_to')
                 //     ->numeric(),
-                // Forms\Components\TextInput::make('title')
-                //     ->required()
-                //     ->maxLength(255),
-                // Forms\Components\Textarea::make('description')
-                //     ->required()
-                //     ->columnSpanFull(),
+                Forms\Components\TextInput::make('title')
+                    ->required()
+                    ->readOnly()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->readOnly()
+                    ->columnSpanFull(),
                 // Forms\Components\DatePicker::make('due_date')
                 //     ->required(),
                 Forms\Components\Select::make('status')
-            ->options([
-                'pending' => 'pending',
-                'in_progress' => 'in_progress',
-                'completed' => 'completed'
-            ])
-            ->selectablePlaceholder(false)
+                    ->options([
+                        'pending' => 'pending',
+                        'in_progress' => 'in_progress',
+                        'completed' => 'completed'
+                    ])
+                    ->selectablePlaceholder(false)
                     ->required(),
             ]);
     }
@@ -61,12 +63,14 @@ class TaskResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('due_date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
-                        'pending' => 'pending' ,
+                        'pending' => 'pending',
                         'in_progress' => 'in_progress',
                         'completed' => 'completed'
                     ]),

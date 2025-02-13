@@ -8,6 +8,7 @@ use App\Events\NewNotification;
 use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Actions\ActionGroup;
 
 class DailyReportObserver
 {
@@ -21,6 +22,13 @@ class DailyReportObserver
         Notification::make()
             ->title($sender)
             ->body('Daily Report')
+            ->actions([
+                Action::make('read')
+                    ->button()
+                    ->url(route('filament.admin.resources.daily-reports.index'))
+                    ->outlined()
+                    ->markAsRead()
+            ])
             ->sendToDatabase($recepient, isEventDispatched: true);
 
         foreach ($recepient as $user) {
