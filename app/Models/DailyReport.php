@@ -6,6 +6,7 @@ use App\Observers\DailyReportObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([DailyReportObserver::class])]
 class DailyReport extends Model
@@ -24,5 +25,9 @@ class DailyReport extends Model
     public function task() : BelongsTo
     {
         return $this->belongsTo(Task::class);
+    }
+    public function comments() : HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

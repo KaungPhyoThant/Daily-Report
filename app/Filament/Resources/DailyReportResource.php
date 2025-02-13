@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\App\Resources\DailyReportResource\RelationManagers\CommentsRelationManager;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -31,10 +32,12 @@ class DailyReportResource extends Resource
                 Forms\Components\DatePicker::make('date')
                     ->required()
                     ->native(false)
-                    ->maxDate(now()),
+                    ->maxDate(now())
+                    ->disabled(),
                 Forms\Components\Select::make('task')
                 ->relationship('task' , 'title')
-                    ->required(),
+                    ->required()
+                    ->disabled(),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => Auth::user()->id),
                 RichEditor::make('content')
@@ -53,6 +56,7 @@ class DailyReportResource extends Resource
                         'codeBlock'
                     ])
                     ->fileAttachmentsVisibility('public')
+                    ->disabled()
             ]);
     }
 
@@ -90,7 +94,7 @@ class DailyReportResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
 
             ])
@@ -104,7 +108,7 @@ class DailyReportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CommentsRelationManager::class,
         ];
     }
 
@@ -113,8 +117,8 @@ class DailyReportResource extends Resource
         return [
             'index' => Pages\ListDailyReports::route('/'),
             // 'create' => Pages\CreateDailyReport::route('/create'),
-            // 'edit' => Pages\EditDailyReport::route('/{record}/edit'),
-            // 'view' => Pages\ViewDailyReport::route('/{record}/view'),
+            'edit' => Pages\EditDailyReport::route('/{record}/edit'),
+            'view' => Pages\ViewDailyReport::route('/{record}/view'),
         ];
     }
 }

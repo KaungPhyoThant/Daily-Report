@@ -11,18 +11,22 @@ use Filament\Resources\Resource;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\HasManyRepeater;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\App\Resources\DailyReportResource\Pages;
 use App\Filament\App\Resources\DailyReportResource\RelationManagers;
-use Filament\Forms\Components\HasManyRepeater;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Filament\App\Resources\DailyReportResource\RelationManagers\CommentsRelationManager;
+use Filament\Forms\Components\Hidden;
 
 class DailyReportResource extends Resource
 {
@@ -44,11 +48,11 @@ class DailyReportResource extends Resource
                     ->required()
                     ->native(false)
                     ->maxDate(now()),
-            Forms\Components\Select::make('task_id')
-                ->relationship('task', 'title')
-                ->required(),
-            Forms\Components\Hidden::make('user_id')
-                ->default(fn() => Auth::user()->id),
+                Forms\Components\Select::make('task_id')
+                    ->relationship('task', 'title')
+                    ->required(),
+                Forms\Components\Hidden::make('user_id')
+                    ->default(fn() => Auth::user()->id),
                 RichEditor::make('content')
                     ->columnSpanFull()
                     ->toolbarButtons([
@@ -64,7 +68,21 @@ class DailyReportResource extends Resource
                         'blockquote',
                         'codeBlock'
                     ])
-                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsVisibility('public'),
+
+            // Section::make('Comments')
+            //     ->schema([
+            //         Repeater::make('comments')
+            //             ->relationship('comments')
+            //             ->schema([
+            //                 Hidden::make('user_id')
+            //                     ->default(fn() => Auth::id()),
+
+            //                 Textarea::make('content')
+            //                     ->label('Comment'),
+            //             ])
+            //             ->columns(1),
+            // ])
             ]);
     }
 
@@ -112,7 +130,7 @@ class DailyReportResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CommentsRelationManager::class,
         ];
     }
 
