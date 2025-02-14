@@ -49,7 +49,9 @@ class DailyReportResource extends Resource
                     ->native(false)
                     ->maxDate(now()),
                 Forms\Components\Select::make('task_id')
-                    ->relationship('task', 'title')
+                    ->relationship('task', 'title' , function (Builder $query) {
+                        $query->where('assigned_to' , Auth::id());
+                    } )
                     ->required(),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => Auth::user()->id),
