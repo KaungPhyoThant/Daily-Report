@@ -2,6 +2,7 @@
 
 namespace App\Filament\App\Resources\DailyReportResource\RelationManagers;
 
+use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -17,6 +18,7 @@ use Filament\Tables\Columns\Layout\Stack;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\Action;
 
 class CommentsRelationManager extends RelationManager
 {
@@ -38,6 +40,7 @@ class CommentsRelationManager extends RelationManager
 
     public function table(Tables\Table $table): Tables\Table
     {
+        $user = Auth::user();
         return $table
             ->columns([
                 Panel::make([
@@ -53,39 +56,28 @@ class CommentsRelationManager extends RelationManager
                                 ->dateTime()
                                 ->color('gray'),
                         ]),
-
-
-                            // ->html() // Enables HTML formatting if needed
-                            // ->wrap()
-                            // ->limit(200),
                     ]),
                 ]),
             ])
             ->defaultSort('created_at', 'asc')
             ->filters([])
-            ->actions([])
             ->headerActions([
                 CreateAction::make()
                     ->modalHeading('Add a New Comment')
                     ->modalSubmitActionLabel('Post Comment'),
+            ])
+            ->actions([
+            Action::make('Delete')
+                ->icon('heroicon-o-trash')
+                ->label('Delete')
+                ->color('danger')
+                ->successNotificationTitle('Comment Deleted Successfully')
+                ->modalHeading('Confirm Deletion')
+                ->modalSubmitActionLabel('Delete Comment')
+                ->visible()
+                ->action(function ($record) {
+                    $record->delete();
+                })
             ]);
     }
 }
-            // ])
-            // ->filters([
-            //     //
-            // ])
-            // ->headerActions([
-            //     Tables\Actions\CreateAction::make(),
-            // ])
-            // ->actions([
-            //     Tables\Actions\EditAction::make(),
-            //     Tables\Actions\DeleteAction::make(),
-            // ])
-            // ->bulkActions([
-            //     Tables\Actions\BulkActionGroup::make([
-            //         Tables\Actions\DeleteBulkAction::make(),
-            //     ]),
-            // ]);
-//     }
-// }

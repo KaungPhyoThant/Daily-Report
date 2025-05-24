@@ -3,19 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TaskResource\Pages;
-use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use Filament\Forms;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 
 class TaskResource extends Resource
 {
@@ -52,9 +46,9 @@ class TaskResource extends Resource
                 Forms\Components\DatePicker::make('due_date')
                     ->required()
                     ->native(false),
-            Forms\Components\Textarea::make('description')
-                ->required()
-                ->columnSpanFull(),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => 'pending',

@@ -29,7 +29,7 @@ class CommentObserver
         if ($sender->role === 'admin') {
             Notification::make()
                 ->title($sender->name)
-                ->body('An admin has added a new comment to your daily report.')
+                ->body('You have a new comment to your daily report.')
                 ->actions([
                     Action::make('read')
                         ->button()
@@ -48,7 +48,7 @@ class CommentObserver
             foreach ($admins as $user) {
                 Notification::make()
                     ->title($sender->name)
-                    ->body('The assigned user has added a new comment to a daily report.')
+                    ->body('The assigned user reply your comment.')
                     ->actions([
                         Action::make('read')
                             ->button()

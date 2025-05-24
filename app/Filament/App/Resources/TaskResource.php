@@ -3,7 +3,6 @@
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\TaskResource\Pages;
-use App\Filament\App\Resources\TaskResource\RelationManagers;
 use App\Models\Task;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TaskResource extends Resource
 {
@@ -22,6 +20,8 @@ class TaskResource extends Resource
     }
 
     protected static ?string $model = Task::class;
+
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -36,9 +36,11 @@ class TaskResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->readOnly()
+                    ->disabled()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->required()
+                    ->disabled()
                     ->readOnly()
                     ->columnSpanFull(),
                 // Forms\Components\DatePicker::make('due_date')

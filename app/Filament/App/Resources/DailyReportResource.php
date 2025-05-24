@@ -38,6 +38,8 @@ class DailyReportResource extends Resource
 
     protected static ?string $model = DailyReport::class;
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-s-calendar';
 
     public static function form(Form $form): Form
@@ -49,9 +51,9 @@ class DailyReportResource extends Resource
                     ->native(false)
                     ->maxDate(now()),
                 Forms\Components\Select::make('task_id')
-                    ->relationship('task', 'title' , function (Builder $query) {
-                        $query->where('assigned_to' , Auth::id());
-                    } )
+                    ->relationship('task', 'title', function (Builder $query) {
+                        $query->where('assigned_to', Auth::id());
+                    })
                     ->required(),
                 Forms\Components\Hidden::make('user_id')
                     ->default(fn() => Auth::user()->id),
@@ -72,19 +74,19 @@ class DailyReportResource extends Resource
                     ])
                     ->fileAttachmentsVisibility('public'),
 
-            // Section::make('Comments')
-            //     ->schema([
-            //         Repeater::make('comments')
-            //             ->relationship('comments')
-            //             ->schema([
-            //                 Hidden::make('user_id')
-            //                     ->default(fn() => Auth::id()),
+                // Section::make('Comments')
+                //     ->schema([
+                //         Repeater::make('comments')
+                //             ->relationship('comments')
+                //             ->schema([
+                //                 Hidden::make('user_id')
+                //                     ->default(fn() => Auth::id()),
 
-            //                 Textarea::make('content')
-            //                     ->label('Comment'),
-            //             ])
-            //             ->columns(1),
-            // ])
+                //                 Textarea::make('content')
+                //                     ->label('Comment'),
+                //             ])
+                //             ->columns(1),
+                // ])
             ]);
     }
 
